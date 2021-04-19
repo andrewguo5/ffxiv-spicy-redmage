@@ -10,6 +10,20 @@ class RedMage():
     self.init_abilities()
     self.init_buffs()
 
+  # Reset Red Mage to pre-pull state
+  def reset(self):
+    self.dualcast = False
+    self.verfire_ready = False
+    self.verstone_ready = False
+    self.acceleration = 0
+    self.buffs = []
+    self.white_mana = 0
+    self.black_mana = 0
+    self.combo_location = 0
+    self.GCD_timer = 0 # In units of 0.1 seconds
+    self.weave_windows = 99
+    self.potency = 0
+
   # Get a skill by its name
   def GCD(self, name):
     for skill in self.GCDs:
@@ -142,20 +156,6 @@ class RedMage():
           else:
             # Neither proc is ready. Cast jolt.
             return "Jolt"
-
-  # Reset Red Mage to pre-pull state
-  def reset(self):
-    self.dualcast = False
-    self.verfire_ready = False
-    self.verstone_ready = False
-    self.acceleration = 0
-    self.buffs = []
-    self.white_mana = 0
-    self.black_mana = 0
-    self.combo_location = 0
-    self.GCD_timer = 0
-    self.weave_windows = 99
-    self.potency = 0
 
   # Defines all GCDs
   def init_GCDs(self):
@@ -380,7 +380,7 @@ class RedMage():
       Ability.Ability({
         "name" : "Fleche",
         "potency" : 440,
-        "recast" : 25,
+        "recast" : 2500,
         "weave_cost" : 1,
         })
       )
@@ -390,7 +390,7 @@ class RedMage():
       Ability.Ability({
         "name" : "Contre Sixte",
         "potency" : 400,
-        "recast" : 35,
+        "recast" : 3500,
         "weave_cost" : 1,
         })
       )
@@ -400,7 +400,7 @@ class RedMage():
       Ability.Ability({
         "name" : "Corps-a-corps",
         "potency" : 130,
-        "recast" : 40,
+        "recast" : 4000,
         "weave_cost" : 1,
         })
       )
@@ -410,7 +410,7 @@ class RedMage():
       Ability.Ability({
         "name" : "Engagement",
         "potency" : 150,
-        "recast" : 35,
+        "recast" : 3500,
         "weave_cost" : 1,
         })
       )
@@ -420,7 +420,7 @@ class RedMage():
       Ability.Ability({
         "name" : "Displacement",
         "potency" : 200,
-        "recast" : 35,
+        "recast" : 3500,
         "weave_cost" : 2,
         })
       )
@@ -436,7 +436,7 @@ class RedMage():
       Buff.Buff({
         "name" : "Manafication",
         "effect" : _effect_manafication,
-        "recast" : 110,
+        "recast" : 11000,
         "weave_cost" : 1,
         })
       )
@@ -447,10 +447,17 @@ class RedMage():
       Buff.Buff({
         "name" : "Acceleration",
         "effect" : _effect_acceleration,
-        "recast" : 55,
+        "recast" : 5500,
         "weave_cost" : 1,
       })
     )
+
+  # Print the state of the self
+  def print_state(self):
+    print("\tMana:", self.white_mana, "/", self.black_mana)
+    print("\tProcs:", self.verstone_ready, "/", self.verfire_ready)
+    print("\tWeaves:", self.weave_windows, "/ Dualcast:", self.dualcast)
+    print("\tTimer:", self.GCD_timer)
 
 # Simple test
 def test():
