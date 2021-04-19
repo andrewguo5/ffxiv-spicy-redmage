@@ -10,6 +10,7 @@ class RedMage():
     self.init_abilities()
     self.init_buffs()
 
+  # Get a skill by its name
   def GCD(self, name):
     for skill in self.GCDs:
       if skill.name == name:
@@ -47,6 +48,7 @@ class RedMage():
     if self.weave_windows < 0:
       raise NameError("Clipping detected.\n")
 
+  # Defines RDM rotation
   def next_GCD(self):
     if self.combo_location == 4:
       return "Scorch"
@@ -141,6 +143,7 @@ class RedMage():
             # Neither proc is ready. Cast jolt.
             return "Jolt"
 
+  # Reset Red Mage to pre-pull state
   def reset(self):
     self.dualcast = False
     self.verfire_ready = False
@@ -154,6 +157,7 @@ class RedMage():
     self.weave_windows = 99
     self.potency = 0
 
+  # Defines all GCDs
   def init_GCDs(self):
     self.GCDs = []
 
@@ -256,6 +260,8 @@ class RedMage():
       RDM.white_mana -= 30
       RDM.black_mana -= 30
       RDM.combo_location = 1
+      if RDM.white_mana < 0 or RDM.black_mana < 0:
+        raise NameError("Enchanted riposte casted without sufficient mana.\n")
     self.GCDs.append(
       GCD.GCD({
         "name" : "Enchanted Riposte",
@@ -273,6 +279,8 @@ class RedMage():
       RDM.white_mana -= 25
       RDM.black_mana -= 25
       RDM.combo_location = 2
+      if RDM.white_mana < 0 or RDM.black_mana < 0:
+        raise NameError("Enchanted zwerchhau casted without sufficient mana.\n")
     self.GCDs.append(
       GCD.GCD({
         "name" : "Enchanted Zwerchhau",
@@ -290,6 +298,8 @@ class RedMage():
       RDM.white_mana -= 25
       RDM.black_mana -= 25
       RDM.combo_location = 3
+      if RDM.white_mana < 0 or RDM.black_mana < 0:
+        raise NameError("Enchanted redoublement casted without sufficient mana.\n")
     self.GCDs.append(
       GCD.GCD({
         "name" : "Enchanted Redoublement",
@@ -361,6 +371,7 @@ class RedMage():
         })
       )
 
+  # Defines all abilities
   def init_abilities(self):
     self.abilities = []
 
@@ -414,7 +425,7 @@ class RedMage():
         })
       )
 
-  # TODO
+  # Defines all buffs
   def init_buffs(self):
     self.buffs = []
 
@@ -441,6 +452,7 @@ class RedMage():
       })
     )
 
+# Simple test
 def test():
   ZP = RedMage()
   print(ZP.white_mana)
